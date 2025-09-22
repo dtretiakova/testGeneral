@@ -1,14 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yourname.qa</groupId>
+    <groupId>com.darigo</groupId>
     <artifactId>test-automation</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <surefire.version>3.2.5</surefire.version>
     </properties>
 
     <dependencies>
@@ -20,38 +22,48 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- RestAssured -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.5.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- AssertJ -->
+        <!-- (опционально) AssertJ для удобных ассертов -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.26.3</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Jackson (json) -->
+        <!-- (опционально) RestAssured для API-тестов -->
+        <!--
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.17.2</version>
+          <groupId>io.rest-assured</groupId>
+          <artifactId>rest-assured</artifactId>
+          <version>5.5.0</version>
+          <scope>test</scope>
         </dependency>
+        -->
     </dependencies>
 
     <build>
         <plugins>
+            <!-- компилятор под Java 17 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+
+            <!-- JUnit5 runner -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>${surefire.version}</version>
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*IT.java</include>
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>
